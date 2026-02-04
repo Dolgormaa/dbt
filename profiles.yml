@@ -1,0 +1,14 @@
+dbtlearn:
+  target: dolgormaa_db
+  outputs:
+    dolgormaa_db:
+      type: singlestore
+      host: demo.novelsoft.mn
+      port: 30222
+      user: dolgormaa
+      password: N0v3Lpa2sw0rd
+      database: dolgormaa_db
+      schema: dolgormaa_db
+      ssl_disabled: true
+      keepalives_idle: 0
+      threads: 4
