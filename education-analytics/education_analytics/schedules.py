@@ -1,18 +1,44 @@
-from dagster import ScheduleDefinition, DefaultScheduleStatus, AssetSelection
-from .definitions import dbt_build_assets
+# schedule.py
 
-# Daily schedule at 2 AM UTC
-daily_dbt_schedule = ScheduleDefinition(
-    name="daily_dbt_run",
-    target=AssetSelection.keys("taz/dim_Date", "taz/dim_Location"),
-    cron_schedule="0 2 * * *",  # 2 AM every day
-    default_status=DefaultScheduleStatus.RUNNING,  # Auto-start when deployed
+from dagster import (
+    ScheduleDefinition,
+    DefaultScheduleStatus,
+    define_asset_job,
+    AssetSelection
 )
 
-# Hourly schedule (if needed)
+# Import your dbt assets
+from dagster_project.assets import dbt_assets
+
+# Daily job → specific dbt model
+daily_dbt_job = define_asset_job(
+    name="daily_dbt_job",
+    selection=AssetSelection.keys("country_year_mapping")
+)
+
+
+# Hourly job → run all dbt models
+hourly_dbt_job = define_asset_job(
+    name="hourly_dbt_job",
+    selection=AssetSelection.assets(dbt_assets)
+)
+
+
+# --------------------------------------------------
+# SCHEDULE DEFINITIONS
+# --------------------------------------------------
+
+# Daily at 02:00 UTC
+daily_dbt_schedule = ScheduleDefinition(
+    job=daily_dbt_job,
+    cron_schedule="0 2 * * *",
+    default_status=DefaultScheduleStatus.RUNNING,
+)
+
+
+# Hourly schedule
 hourly_dbt_schedule = ScheduleDefinition(
-    name="hourly_dbt_run",
-    target=dbt_build_assets,
-    cron_schedule="0 * * * *",  # Every hour
-    default_status=DefaultScheduleStatus.STOPPED,  # Start manually
+    job=hourly_dbt_job,
+    cron_schedule="0 * * * *",
+    default_status=DefaultScheduleStatus.STOPPED,
 )
