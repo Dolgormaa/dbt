@@ -1,0 +1,12 @@
+README.md
+pyproject.toml
+setup.cfg
+setup.py
+education_analytics/__init__.py
+education_analytics/assets.py
+education_analytics/definitions.py
+education_analytics.egg-info/PKG-INFO
+education_analytics.egg-info/SOURCES.txt
+education_analytics.egg-info/dependency_links.txt
+education_analytics.egg-info/requires.txt
+education_analytics.egg-info/top_level.txt

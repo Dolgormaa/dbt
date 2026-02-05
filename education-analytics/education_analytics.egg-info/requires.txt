@@ -1,0 +1,9 @@
+dagster
+dagster-cloud
+dagster-dbt
+dbt-core
+dbt-singlestore
+
+[dev]
+dagster-webserver
+pytest
